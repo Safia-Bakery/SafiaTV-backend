@@ -28,6 +28,7 @@ class CreateMedia(BaseConfig):
 #
 class GetMedia(BaseConfig):
     id: UUID
+    file_url: str
     name: Optional[str] = None
     description: Optional[str] = None
     is_active: Optional[bool] = None
