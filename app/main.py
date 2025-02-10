@@ -15,6 +15,8 @@ from app.routes.v1.accounts import account_router
 from app.routes.v1.account_groups import account_group_router
 from app.routes.v1.files import file_router
 from app.routes.v1.media import media_router
+from app.routes.v1.branches import branches_router
+from app.routes.v1.branch_account_groups import branch_account_group_router
 from app.utils.utils import get_current_user_for_docs
 
 # from app.utils.websocket_connections import manager
@@ -32,6 +34,8 @@ app.include_router(account_router, prefix="/api/v1", tags=["Accounts"])
 app.include_router(account_group_router, prefix="/api/v1", tags=["Account Groups"])
 app.include_router(media_router, prefix="/api/v1", tags=["Media"])
 app.include_router(file_router, prefix="/api/v1", tags=["Files"])
+app.include_router(branches_router, prefix="/api/v1", tags=["Branches"])
+app.include_router(branch_account_group_router, prefix="/api/v1", tags=["Branch Account Groups"])
 
 
 

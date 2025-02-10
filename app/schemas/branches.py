@@ -1,6 +1,7 @@
+from typing import Optional
 from uuid import UUID
-
 from pydantic import BaseModel, ConfigDict
+
 
 
 class BaseConfig(BaseModel):
@@ -11,4 +12,15 @@ class BaseConfig(BaseModel):
 
 class GetBranch(BaseConfig):
     id: UUID
+    name: Optional[str] = None
+    is_active: Optional[bool] = None
+
+
+class CreateBranch(BaseConfig):
     name: str
+
+
+class UpdateBranch(BaseConfig):
+    id: UUID
+    name: Optional[str] = None
+    is_active: Optional[bool] = None

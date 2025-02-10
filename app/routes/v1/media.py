@@ -5,12 +5,10 @@ from fastapi import Depends, File
 from fastapi_pagination import Page, paginate
 from sqlalchemy.orm import Session
 
-from app.crud.media import add_media, get_all_medias
-from app.routes.depth import get_db, get_current_user
+from app.crud.media import add_media, get_all_medias, get_device_medias
+from app.routes.depth import get_db, get_current_user, PermissionChecker
 from app.schemas.media import CreateMedia, GetMedia
 
-# from app.schemas.users import GetUserFullData
-# from app.utils.utils import generate_random_string
 
 
 media_router = APIRouter()
@@ -20,7 +18,7 @@ media_router = APIRouter()
 async def create_media(
     data: CreateMedia,
     db: Session = Depends(get_db),
-    # current_user: GetUserFullData = Depends(get_current_user),
+    # current_user: dict = Depends(PermissionChecker(required_permissions='create_media'))
 ):
     created_media = add_media(db=db, data=data)
     return created_media
@@ -29,20 +27,21 @@ async def create_media(
 @media_router.get("/media", response_model=Page[GetMedia])
 async def get_media_list(
     db: Session = Depends(get_db),
-    # current_user: GetUserFullData = Depends(get_current_user),
+    # current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
 ):
     medias = get_all_medias(db=db)
     return paginate(medias)
 
 
 
-# @media_router.get("/media/{account_group}", response_model=Page[GetMedia])
-@media_router.get("/media/device")
+@media_router.get("/media/device", response_model=Page[GetMedia])
 async def get_media_list(
-    # account_group: UUID,
+    account_group: UUID,
+    branch_id: UUID,
     db: Session = Depends(get_db),
-    # current_user: GetUserFullData = Depends(get_current_user),
+    # current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
 ):
-    # medias = get_all_medias(db=db)
-    # return paginate(medias)
-    return []
+    medias = get_device_medias(db=db, branch_id=branch_id, account_group=account_group)
+    # medias = get_device_medias(db=db, branch_id=current_user.branch_id, account_group=current_user.account_group)
+    return paginate(medias)
+

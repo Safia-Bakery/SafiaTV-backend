@@ -47,7 +47,7 @@ async def create_role_lifespan():
 
     account = get_account_by_password(db=db, password=settings.admin_password)
     if not account:
-        create_account(db=db, password=settings.admin_password, role_id=role.id, accountgroup_id=None)
+        create_account(db=db, password=settings.admin_password, role_id=role.id)
 
     role_permissions = []
     for i in role.accesses:

@@ -1,10 +1,7 @@
-from datetime import datetime
-from symtable import Class
-from typing import Optional, List
+from typing import Optional
 from uuid import UUID
-from pydantic import BaseModel, Field, ConfigDict
 
-from app.schemas.branches import GetBranch
+from pydantic import BaseModel, ConfigDict
 
 
 class BaseConfig(BaseModel):
@@ -20,16 +17,14 @@ class CreateAccountGroup(BaseConfig):
 
 class UpdateAccountGroup(BaseConfig):
     id: UUID
-    name: Optional[str]
-    description: Optional[str]
-    is_active: Optional[bool]
+    name: Optional[str] = None
+    description: Optional[str] = None
+    is_active: Optional[bool] = None
 
 
 class GetAccountGroup(BaseConfig):
     id: UUID
     name: str
-    description: Optional[str]
-    is_active: Optional[bool]
-    # accounts: Optional[List[GetAccount]] = None
-    # branches: Optional[List[GetBranch]] = None
+    description: Optional[str] = None
+    is_active: Optional[bool] = None
 

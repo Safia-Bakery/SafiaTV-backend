@@ -39,7 +39,7 @@ async def get_current_user(
         expire_date = payload.get("exp")
         sub = payload.get("sub")
         permissions = payload.get('permissions')
-        user = payload.get('user')
+        account = payload.get('account')
         if datetime.fromtimestamp(expire_date) < datetime.now():
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -53,14 +53,14 @@ async def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    user["permissions"] = permissions
+    account["permissions"] = permissions
 
-    if user is None:
+    if account is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Could not find user",
         )
-    return user
+    return account
 
 
 
@@ -70,13 +70,13 @@ class PermissionChecker:
     def __init__(self, required_permissions: str) -> None:
         self.required_permissions = required_permissions
 
-    def __call__(self,user :dict = Depends(get_current_user)) -> dict:
-        if self.required_permissions not in user['permissions']:
+    def __call__(self, account: dict = Depends(get_current_user)) -> dict:
+        if self.required_permissions not in account['permissions']:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="You do not have permission to use this api",
             )
-        return user
+        return account
 
 
 
