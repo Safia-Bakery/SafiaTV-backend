@@ -52,7 +52,7 @@ async def account_login(
 async def add_account(
         data: CreateAccount,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_account'))
+        # current_user: dict = Depends(PermissionChecker(required_permissions='create_account'))
 ):
     account = get_account_by_password(db=db, password=data.password)
     if account:
@@ -100,6 +100,6 @@ async def get_account(
 async def update_account(
         data: UpdateAccount,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_account'))
+        # current_user: dict = Depends(PermissionChecker(required_permissions='edit_account'))
 ):
     return edit_account(db=db, data=data)

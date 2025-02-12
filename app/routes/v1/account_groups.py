@@ -5,8 +5,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.crud.account_groups import add_account_group, get_account_groups, get_one_account_group, edit_account_group
-from app.routes.depth import get_db
+from app.routes.depth import get_db, PermissionChecker
 from app.schemas.account_groups import CreateAccountGroup, GetAccountGroup, UpdateAccountGroup
+
 
 account_group_router = APIRouter()
 
@@ -15,7 +16,7 @@ account_group_router = APIRouter()
 @account_group_router.get('/accounts-groups', response_model=List[GetAccountGroup])
 async def get_account_group_list(
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_role'))
+        # current_user: dict = Depends(PermissionChecker(required_permissions='view_account_group'))
 ):
     account_groups = get_account_groups(db=db)
     return account_groups
@@ -25,7 +26,7 @@ async def get_account_group_list(
 async def get_account_group(
         id: UUID,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_role'))
+        # current_user: dict = Depends(PermissionChecker(required_permissions='view_account_group'))
 ):
     account_group = get_one_account_group(db=db, group_id=id)
     return account_group
@@ -35,7 +36,7 @@ async def get_account_group(
 async def create_account_groups(
         data: CreateAccountGroup,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='create_role'))
+        # current_user: dict = Depends(PermissionChecker(required_permissions='create_account_group'))
 ):
     created_account_group = add_account_group(db=db, data=data)
     return created_account_group
@@ -45,7 +46,7 @@ async def create_account_groups(
 async def update_account_group(
         data: UpdateAccountGroup,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='edit_role'))
+        # current_user: dict = Depends(PermissionChecker(required_permissions='edit_account_group'))
 ):
     updated_obj = edit_account_group(db=db, data=data)
     return updated_obj

@@ -5,7 +5,7 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from app.crud.branch_account_groups import add_branch_group, get_branch_account_groups, delete_record
-from app.routes.depth import get_db
+from app.routes.depth import get_db, PermissionChecker
 from app.schemas.branch_account_groups import GetBranchAccountGroups, CreateBranchAccountGroups
 
 
@@ -16,7 +16,7 @@ branch_account_group_router = APIRouter()
 async def create_branch_account_group(
         data: CreateBranchAccountGroups,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='create_media'))
+        # current_user: dict = Depends(PermissionChecker(required_permissions='create_account_group_branch_relation'))
 ):
     # branch_account_groups = []
     for account_group in data.account_groups:
@@ -32,7 +32,7 @@ async def create_branch_account_group(
 async def get_branch_account_group_list(
         branch_id: UUID,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
+        # current_user: dict = Depends(PermissionChecker(required_permissions='view_account_group_branch_relation'))
 ):
     objs = get_branch_account_groups(db=db, branch_id=branch_id)
     return objs
@@ -42,7 +42,7 @@ async def get_branch_account_group_list(
 async def delete_branch_account_group(
         id: UUID,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
+        # current_user: dict = Depends(PermissionChecker(required_permissions='delete_account_group_branch_relation'))
 ):
     removed_obj = delete_record(db=db, id=id)
     if removed_obj is None:

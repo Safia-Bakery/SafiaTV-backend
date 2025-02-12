@@ -25,9 +25,16 @@ class GetPermissionPage(BaseConfig):
     permission: Optional[List[PermissionsGet]] = None
 
 
+
+class CreateAccess(BaseConfig):
+    permission_id: UUID
+    role_id: UUID
+
+
+
 class AccessesGet(BaseConfig):
     id:UUID
-    permission:Optional[PermissionsGet]=None
+    permission: Optional[PermissionsGet] = None
 
 
 

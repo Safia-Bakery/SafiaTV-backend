@@ -3,8 +3,8 @@ from fastapi import Depends, File
 from sqlalchemy.orm import Session
 
 from app.routes.depth import get_db, get_current_user
-# from app.schemas.users import GetUserFullData
-# from app.utils.utils import generate_random_string
+from app.schemas.accounts import GetAccount
+
 
 
 file_router = APIRouter()
@@ -14,7 +14,7 @@ file_router = APIRouter()
 async def read_files(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    # current_user: GetUserFullData = Depends(get_current_user),
+    # current_user: GetAccount = Depends(get_current_user),
 ):
     file_path = f"files/{file.filename}"
     with open(file_path, "wb") as buffer:

@@ -31,7 +31,14 @@ def create_accesses(db:Session,role_id,permission_id):
     query = Accesses(role_id=role_id,permission_id=permission_id)
     db.add(query)
     db.commit()
-    return  query
+    return query
+
+
+
+def delete_accesses(db: Session, id):
+    obj = db.query(Accesses).get(ident=id)
+    db.delete(obj)
+    db.commit()
 
 
 

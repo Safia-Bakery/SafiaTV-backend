@@ -51,3 +51,4 @@ async def update_roles(
 ):
     updated_role = update_role(db=db, data=body)
     return updated_role
+

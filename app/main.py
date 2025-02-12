@@ -17,11 +17,14 @@ from app.routes.v1.files import file_router
 from app.routes.v1.media import media_router
 from app.routes.v1.branches import branches_router
 from app.routes.v1.branch_account_groups import branch_account_group_router
+from app.routes.v1.accesses import accesses_router
 from app.utils.utils import get_current_user_for_docs
 
 # from app.utils.websocket_connections import manager
 
+
 app = FastAPI(lifespan=combined_lifespan,swagger_ui_parameters = {"docExpansion":"none"},docs_url=None, redoc_url=None, openapi_url=None,)
+
 
 app.title = settings.app_name
 app.version = settings.version
@@ -29,7 +32,8 @@ app.version = settings.version
 
 
 
-app.include_router(roles_router, prefix="/api/v1", tags=["Account Roles"])
+app.include_router(roles_router, prefix="/api/v1", tags=["Roles"])
+app.include_router(accesses_router, prefix="/api/v1", tags=["Role accesses"])
 app.include_router(account_router, prefix="/api/v1", tags=["Accounts"])
 app.include_router(account_group_router, prefix="/api/v1", tags=["Account Groups"])
 app.include_router(media_router, prefix="/api/v1", tags=["Media"])
