@@ -1,7 +1,7 @@
 from sqlalchemy import and_
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
-from app.schemas.media import CreateMedia
+from app.schemas.media import CreateMedia, UpdateMedia
 from app.models.Media import Media
 from app.models.AccountGroupBranchRelations import AccountGroupBranchRelations
 
@@ -47,3 +47,23 @@ def get_device_medias(db: Session, branch_id, account_group):
     ).all()
 
     return medias
+
+
+
+def edit_media(db: Session, data: UpdateMedia):
+    obj = db.query(Media).get(ident=data.id)
+    if data.file_url is not None:
+        obj.file_url = data.file_url
+    if data.name is not None:
+        obj.name = data.name
+    if data.description is not None:
+        obj.description = data.description
+    if data.accountgroup_id is not None:
+        obj.accountgroup_id = data.accountgroup_id
+    if data.is_active is not None:
+        obj.is_active = data.is_active
+
+    db.commit()
+    db.refresh(obj)
+
+    return obj

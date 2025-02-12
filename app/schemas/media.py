@@ -19,17 +19,19 @@ class CreateMedia(BaseConfig):
     accountgroup_id: Optional[UUID] = None
 
 
-# class UpdateAccountGroup(BaseConfig):
-#     id: UUID
-#     name: Optional[str]
-#     description: Optional[str]
-#     is_active: Optional[bool]
-#
-#
+class UpdateMedia(BaseConfig):
+    id: UUID
+    name: Optional[str] = None
+    file_url: Optional[str] = None
+    description: Optional[str] = None
+    accountgroup_id: Optional[UUID] = None
+    is_active: Optional[bool] = None
+
+
 
 class GetMedia(BaseConfig):
     id: UUID
-    file_url: str
+    file_url: Optional[str] = None
     name: Optional[str] = None
     description: Optional[str] = None
     is_active: Optional[bool] = None

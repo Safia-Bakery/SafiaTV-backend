@@ -5,11 +5,9 @@ from fastapi import Depends, File
 from fastapi_pagination import Page, paginate
 from sqlalchemy.orm import Session
 
-from app.crud.media import add_media, get_all_medias, get_device_medias
+from app.crud.media import add_media, get_all_medias, get_device_medias, edit_media
 from app.routes.depth import get_db, get_current_user, PermissionChecker
-from app.schemas.media import CreateMedia, GetMedia
-
-
+from app.schemas.media import CreateMedia, GetMedia, UpdateMedia
 
 media_router = APIRouter()
 
@@ -44,4 +42,15 @@ async def get_media_list(
     medias = get_device_medias(db=db, branch_id=branch_id, account_group=account_group)
     # medias = get_device_medias(db=db, branch_id=current_user.branch_id, account_group=current_user.account_group)
     return paginate(medias)
+
+
+
+@media_router.put("/media", response_model=GetMedia)
+async def update_media(
+        data: UpdateMedia,
+        db: Session = Depends(get_db),
+        # current_user: dict = Depends(PermissionChecker(required_permissions='edit_media'))
+):
+    media = edit_media(db=db, data=data)
+    return media
 
