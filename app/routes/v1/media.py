@@ -33,14 +33,14 @@ async def get_media_list(
 
 
 @media_router.get("/media/device", response_model=Page[GetMedia])
-async def get_media_list(
-    account_group: UUID,
-    branch_id: UUID,
+async def get_device_media(
+    # account_group: UUID,
+    # branch_id: UUID,
     db: Session = Depends(get_db),
-    # current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
+    current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
 ):
-    medias = get_device_medias(db=db, branch_id=branch_id, account_group=account_group)
-    # medias = get_device_medias(db=db, branch_id=current_user.branch_id, account_group=current_user.account_group)
+    # medias = get_device_medias(db=db, branch_id=branch_id, account_group=account_group)
+    medias = get_device_medias(db=db, branch_id=current_user["branch_id"], account_group=current_user["account_group"])
     return paginate(medias)
 
 
