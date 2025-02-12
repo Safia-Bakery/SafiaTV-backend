@@ -29,6 +29,7 @@ def add_branch_group(db: Session, branch_id, account_group):
 
 
 def get_branch_account_groups(db: Session, branch_id):
+    branch = get_branch_by_id(db=db, id=branch_id)
     account_groups = db.query(
         AccountGroups
     ).join(
@@ -38,7 +39,8 @@ def get_branch_account_groups(db: Session, branch_id):
     ).all()
 
     data_dict = {
-        "branch": get_branch_by_id(db=db, id=branch_id),
+        "branch": branch,
+        "accounts": branch.accounts,
         "account_groups": account_groups
     }
     return data_dict

@@ -4,9 +4,9 @@ from fastapi import APIRouter, HTTPException
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from app.crud.branch_account_groups import add_branch_group, get_branch_account_groups, delete_record
+from app.crud.branch_account_groups import add_branch_group, delete_record
 from app.routes.depth import get_db, PermissionChecker
-from app.schemas.branch_account_groups import GetBranchAccountGroups, CreateBranchAccountGroups
+from app.schemas.branch_account_groups import CreateBranchAccountGroups
 
 
 branch_account_group_router = APIRouter()
@@ -28,14 +28,14 @@ async def create_branch_account_group(
 
 
 
-@branch_account_group_router.get("/branch-account-groups", response_model=GetBranchAccountGroups)
-async def get_branch_account_group_list(
-        branch_id: UUID,
-        db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_account_group_branch_relation'))
-):
-    objs = get_branch_account_groups(db=db, branch_id=branch_id)
-    return objs
+# @branch_account_group_router.get("/branch-account-groups", response_model=GetBranchAccountGroups)
+# async def get_branch_account_group_list(
+#         branch_id: UUID,
+#         db: Session = Depends(get_db),
+#         # current_user: dict = Depends(PermissionChecker(required_permissions='view_account_group_branch_relation'))
+# ):
+#     objs = get_branch_account_groups(db=db, branch_id=branch_id)
+#     return objs
 
 
 @branch_account_group_router.delete("/branch-account-groups/{id}")

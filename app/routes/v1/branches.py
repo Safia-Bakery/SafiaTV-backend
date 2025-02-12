@@ -5,8 +5,10 @@ from fastapi import Depends
 from fastapi_pagination import Page, paginate
 from sqlalchemy.orm import Session
 
+from app.crud.branch_account_groups import get_branch_account_groups
 from app.crud.branches import add_branch, get_all_branches, get_branch_by_id, edit_branch
 from app.routes.depth import get_db, PermissionChecker
+from app.schemas.branch_account_groups import GetBranchAccountGroups
 from app.schemas.branches import CreateBranch, GetBranch, UpdateBranch
 
 
@@ -32,13 +34,13 @@ async def get_branch_list(
     return paginate(branches)
 
 
-@branches_router.get("/branches/{id}", response_model=GetBranch)
+@branches_router.get("/branches/{id}", response_model=GetBranchAccountGroups)
 async def get_branch(
         id: UUID,
         db: Session = Depends(get_db),
         # current_user: dict = Depends(PermissionChecker(required_permissions='view_branch'))
 ):
-    branch = get_branch_by_id(db=db, id=id)
+    branch = get_branch_account_groups(db=db, branch_id=id)
     return branch
 
 
