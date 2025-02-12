@@ -32,13 +32,13 @@ async def account_login(
 
     permissions = []
     if account.role.accesses:
-        for permission in account.role.accesses:
-            permissions.append(permission.permission.link)
+        for access in account.role.accesses:
+            permissions.append(access.permission.link)
         account_info = {
             "id": str(account.id),
             "password": account.password,
-            "branch_id": account.branch_id,
-            "account_group": account.accountgroup_id
+            "branch_id": str(account.branch_id),
+            "account_group": str(account.accountgroup_id)
         }
 
         return {
