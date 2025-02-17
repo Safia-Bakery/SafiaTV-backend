@@ -21,9 +21,12 @@ def add_account_group(db:Session, data: CreateAccountGroup):
         return None
 
 
-def get_account_groups(db: Session):
-    objs = db.query(AccountGroups).all()
-    return objs
+def get_account_groups(db: Session, status):
+    objs = db.query(AccountGroups)
+    if status is not None:
+        objs = objs.filter(AccountGroups.is_active == status)
+
+    return objs.all()
 
 
 def get_one_account_group(db: Session, group_id):

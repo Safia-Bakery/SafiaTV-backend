@@ -43,9 +43,12 @@ def delete_accesses(db: Session, id):
 
 
 
-def get_all_roles(db: Session):
-    query = db.query(Roles).all()
-    return query
+def get_all_roles(db: Session, status):
+    query = db.query(Roles)
+    if status is not None:
+        query = query.filter(Roles.is_active == status)
+
+    return query.all()
 
 
 def get_one_role(db: Session, role_id):

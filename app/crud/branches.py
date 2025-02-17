@@ -21,9 +21,12 @@ def add_branch(db: Session, data: CreateBranch):
         return None
 
 
-def get_all_branches(db: Session):
-    branches = db.query(Branches).all()
-    return branches
+def get_all_branches(db: Session, status):
+    branches = db.query(Branches)
+    if status is not None:
+        branches = branches.filter(Branches.is_active == status)
+
+    return branches.all()
 
 
 def get_branch_by_id(db: Session, id):

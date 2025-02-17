@@ -1,3 +1,4 @@
+from typing import Optional
 from uuid import UUID
 
 from fastapi import APIRouter, UploadFile
@@ -24,22 +25,21 @@ async def create_media(
 
 @media_router.get("/media", response_model=Page[GetMedia])
 async def get_media_list(
+    id: Optional[UUID] = None,
+    status: Optional[bool] = None,
     db: Session = Depends(get_db),
     # current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
 ):
-    medias = get_all_medias(db=db)
+    medias = get_all_medias(db=db, media_id=id, status=status)
     return paginate(medias)
 
 
 
 @media_router.get("/media/device", response_model=Page[GetMedia])
 async def get_device_media(
-    # account_group: UUID,
-    # branch_id: UUID,
     db: Session = Depends(get_db),
     current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
 ):
-    # medias = get_device_medias(db=db, branch_id=branch_id, account_group=account_group)
     medias = get_device_medias(db=db, branch_id=current_user["branch_id"], account_group=current_user["account_group"])
     return paginate(medias)
 

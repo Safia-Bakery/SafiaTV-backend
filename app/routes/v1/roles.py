@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends
@@ -16,6 +16,7 @@ roles_router = APIRouter()
 
 @roles_router.get('/roles', response_model=List[RoleList])
 async def get_role_list(
+        status: Optional[bool] = None,
         db: Session = Depends(get_db),
         # current_user: dict = Depends(PermissionChecker(required_permissions='view_role'))
 ):

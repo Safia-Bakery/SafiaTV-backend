@@ -1,3 +1,4 @@
+from typing import Optional
 from uuid import UUID
 
 from fastapi import APIRouter
@@ -27,10 +28,11 @@ async def create_branch(
 
 @branches_router.get("/branches", response_model=Page[GetBranch])
 async def get_branch_list(
+        status: Optional[bool] = None,
         db: Session = Depends(get_db),
         # current_user: dict = Depends(PermissionChecker(required_permissions='view_branch'))
 ):
-    branches = get_all_branches(db=db)
+    branches = get_all_branches(db=db, status=status)
     return paginate(branches)
 
 

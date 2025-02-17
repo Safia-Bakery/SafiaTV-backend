@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends
@@ -15,10 +15,11 @@ account_group_router = APIRouter()
 
 @account_group_router.get('/accounts-groups', response_model=List[GetAccountGroup])
 async def get_account_group_list(
+        status: Optional[bool] = None,
         db: Session = Depends(get_db),
         # current_user: dict = Depends(PermissionChecker(required_permissions='view_account_group'))
 ):
-    account_groups = get_account_groups(db=db)
+    account_groups = get_account_groups(db=db, status=status)
     return account_groups
 
 

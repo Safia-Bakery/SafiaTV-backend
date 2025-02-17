@@ -26,9 +26,20 @@ def add_media(db: Session, data: CreateMedia):
         return None
 
 
-def get_all_medias(db: Session):
-    medias = db.query(Media).all()
-    return medias
+def get_all_medias(db: Session, media_id, status):
+    medias = db.query(Media)
+    if media_id is not None:
+        medias = medias.filter(Media.id == media_id)
+        return medias.all()
+    if status is not None:
+        medias = medias.filter(Media.is_active == status)
+
+    return medias.all()
+
+
+def get_media(db: Session, id):
+    media = db.query(Media).get(ident=id)
+    return media
 
 
 def get_device_medias(db: Session, branch_id, account_group):
