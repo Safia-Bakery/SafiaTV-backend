@@ -1,3 +1,4 @@
+from sqlalchemy import and_
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
@@ -79,13 +80,27 @@ def update_role(db:Session, data: UpdateRole):
     if data.is_active is not None:
         role.is_active = data.is_active
     if data.permissions is not None:
+        role_accesses = db.query(Accesses).filter(Accesses.role_id == data.id).all()
+        role_permissions = [access.permission_id for access in role_accesses]
+        for permission in role_permissions:
+            if permission not in data.permissions:
+                access = db.query(Accesses).filter(
+                    and_(
+                        Accesses.role_id == data.id,
+                        Accesses.permission_id == permission
+                    )
+                ).first()
+                db.delete(access)
+                db.flush()
+
         for permission in data.permissions:
-            access = Accesses(
-                permission_id=permission,
-                role_id=role.id
-            )
-            db.add(access)
-            db.flush()
+            if permission not in role_permissions:
+                access = Accesses(
+                    permission_id=permission,
+                    role_id=role.id
+                )
+                db.add(access)
+                db.flush()
 
         db.commit()
         db.refresh(role)

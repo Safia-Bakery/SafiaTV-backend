@@ -3,6 +3,9 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 from app.models.Accounts import Accounts
+from app.models.Roles import Roles
+from app.models.Accesses import Accesses
+from app.models.Permissions import Permissions
 from app.schemas.accounts import UpdateAccount
 from app.utils.utils import hash_password
 
@@ -29,6 +32,12 @@ def create_account(
 
 def get_account_by_password(db:Session, password):
     query = db.query(Accounts).filter(Accounts.password == password).first()
+    accesses = db.query(Accesses).filter(Accesses.role_id == query.role_id).all()
+    permissions = []
+    for access in accesses:
+        permissions.append(access.permission_id)
+
+    query.permissions = permissions
     return query
 
 

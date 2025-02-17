@@ -18,6 +18,7 @@ from app.routes.v1.media import media_router
 from app.routes.v1.branches import branches_router
 from app.routes.v1.branch_account_groups import branch_account_group_router
 from app.routes.v1.accesses import accesses_router
+from app.routes.v1.permissions import permissions_router
 from app.utils.utils import get_current_user_for_docs
 
 # from app.utils.websocket_connections import manager
@@ -32,6 +33,7 @@ app.version = settings.version
 
 
 
+app.include_router(permissions_router, prefix="/api/v1", tags=["Permissions"])
 app.include_router(roles_router, prefix="/api/v1", tags=["Roles"])
 app.include_router(accesses_router, prefix="/api/v1", tags=["Role accesses"])
 app.include_router(account_router, prefix="/api/v1", tags=["Accounts"])

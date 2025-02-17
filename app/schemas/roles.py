@@ -38,12 +38,17 @@ class AccessesGet(BaseConfig):
 
 
 
+class GetRolePermissions(BaseConfig):
+    id: UUID
+
+
 class RolesGet(BaseConfig):
     id: UUID
     name: Optional[str] = None
     description: Optional[str] = None
     created_at : Optional[datetime] = None
-    accesses: Optional[list[AccessesGet]] = None
+    # accesses: Optional[list[AccessesGet]] = None
+    permissions: Optional[list[UUID]] = None
 
 
 class RoleList(BaseConfig):
