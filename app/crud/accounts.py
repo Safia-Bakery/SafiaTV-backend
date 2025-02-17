@@ -37,7 +37,7 @@ def get_account_by_password(db:Session, password):
     for access in accesses:
         permissions.append(access.permission_id)
 
-    query.permissions = permissions
+    query.role.permissions = permissions
     return query
 
 
