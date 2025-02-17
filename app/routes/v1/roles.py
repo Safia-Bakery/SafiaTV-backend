@@ -20,7 +20,7 @@ async def get_role_list(
         db: Session = Depends(get_db),
         # current_user: dict = Depends(PermissionChecker(required_permissions='view_role'))
 ):
-    roles = get_all_roles(db=db)
+    roles = get_all_roles(db=db, status=status)
     return roles
 
 
