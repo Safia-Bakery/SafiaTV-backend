@@ -28,10 +28,10 @@ class GetAccountFullData(BaseConfig):
 
 
 
-class GetAccount(BaseConfig):
+class GetAccounts(BaseConfig):
     id: Optional[UUID] = None
     is_active: Optional[bool] = None
-    password: Optional[str] = None
+    accountgroup: Optional[GetAccountGroup] = None
 
 
 

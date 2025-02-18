@@ -2,7 +2,7 @@ from typing import Optional, List
 from uuid import UUID
 from app.schemas.account_groups import GetAccountGroup
 from app.schemas.branches import GetBranch
-from app.schemas.accounts import GetAccount
+from app.schemas.accounts import GetAccounts
 from pydantic import BaseModel, ConfigDict
 
 
@@ -15,7 +15,7 @@ class BaseConfig(BaseModel):
 
 class GetBranchAccountGroups(BaseConfig):
     branch: Optional[GetBranch]
-    accounts: Optional[List[GetAccount]]
+    accounts: Optional[List[GetAccounts]]
     account_groups: Optional[List[GetAccountGroup]]
 
 

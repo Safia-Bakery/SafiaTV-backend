@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.crud.accounts import get_account_by_password, get_account_list, create_account, get_account_by_id, edit_account
 from app.routes.depth import get_db, PermissionChecker, get_me
-from app.schemas.accounts import CreateAccount, GetAccountFullData, AccountLogin, GetAccount, UpdateAccount
+from app.schemas.accounts import CreateAccount, GetAccountFullData, AccountLogin, GetAccounts, UpdateAccount
 from app.utils.utils import verify_password, create_access_token, create_refresh_token, hash_password
 
 
@@ -78,7 +78,7 @@ async def get_me(
     return current_user
 
 
-@account_router.get("/accounts", response_model=Page[GetAccount])
+@account_router.get("/accounts", response_model=Page[GetAccounts])
 async def get_accounts(
         db: Session = Depends(get_db),
         # current_user: dict = Depends(PermissionChecker(required_permissions='view_account'))

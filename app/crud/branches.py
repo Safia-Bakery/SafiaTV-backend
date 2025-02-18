@@ -1,6 +1,8 @@
+from sqlalchemy import and_
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from app import AccountGroupBranchRelations
 from app.models.Branches import Branches
 from app.schemas.branches import CreateBranch, UpdateBranch
 
@@ -21,10 +23,12 @@ def add_branch(db: Session, data: CreateBranch):
         return None
 
 
-def get_all_branches(db: Session, status):
+def get_all_branches(db: Session, status, name):
     branches = db.query(Branches)
     if status is not None:
         branches = branches.filter(Branches.is_active == status)
+    if name is not None:
+        branches = branches.filter(Branches.name.ilike(f"%{name}%"))
 
     return branches.all()
 
@@ -40,6 +44,28 @@ def edit_branch(db: Session, data: UpdateBranch):
         obj.name = data.name
     if data.is_active is not None:
         obj.is_active = data.is_active
+    if data.account_groups is not None:
+        relations = db.query(AccountGroupBranchRelations).filter(AccountGroupBranchRelations.branch_id == data.id).all()
+        account_groups = [relation.accountgroup_id for relation in relations]
+        for group in account_groups:
+            if group not in data.account_groups:
+                access = db.query(AccountGroupBranchRelations).filter(
+                    and_(
+                        AccountGroupBranchRelations.branch_id == data.id,
+                        AccountGroupBranchRelations.accountgroup_id == group
+                    )
+                ).first()
+                db.delete(access)
+                db.flush()
+
+        for group in data.account_groups:
+            if group not in account_groups:
+                access = AccountGroupBranchRelations(
+                    accountgroup_id=group,
+                    branch_id=obj.id
+                )
+                db.add(access)
+                db.flush()
 
     db.commit()
     db.refresh(obj)

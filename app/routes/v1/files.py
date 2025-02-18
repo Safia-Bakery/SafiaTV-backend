@@ -3,7 +3,7 @@ from fastapi import Depends, File
 from sqlalchemy.orm import Session
 
 from app.routes.depth import get_db, get_current_user
-from app.schemas.accounts import GetAccount
+from app.schemas.accounts import GetAccounts
 
 
 

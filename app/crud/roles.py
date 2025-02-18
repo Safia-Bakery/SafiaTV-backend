@@ -105,7 +105,7 @@ def update_role(db:Session, data: UpdateRole):
                 db.add(access)
                 db.flush()
 
-        db.commit()
-        db.refresh(role)
+    db.commit()
+    db.refresh(role)
 
     return role

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from uuid import UUID
 from pydantic import BaseModel, ConfigDict
 
@@ -24,3 +24,4 @@ class UpdateBranch(BaseConfig):
     id: UUID
     name: Optional[str] = None
     is_active: Optional[bool] = None
+    account_groups: Optional[List[UUID]] = None
