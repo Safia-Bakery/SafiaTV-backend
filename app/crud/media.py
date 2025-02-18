@@ -54,7 +54,10 @@ def get_device_medias(db: Session, branch_id, account_group):
     medias = db.query(
         Media
     ).filter(
-        Media.accountgroup_id == branch_account_group
+        and_(
+            Media.is_active == True,
+            Media.accountgroup_id == branch_account_group
+        )
     ).all()
 
     return medias
