@@ -46,6 +46,7 @@ async def create_role_lifespan():
         role = create_role(db=db, name=settings.admin_role, description='Superuser')
 
     account = get_account_by_password(db=db, password=settings.admin_password)
+    print("ACCOUNT: ", account)
     if not account:
         create_account(db=db, password=settings.admin_password, role_id=role.id)
 
