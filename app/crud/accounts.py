@@ -1,6 +1,7 @@
 from typing import Optional
 from uuid import UUID
 
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from app.models.Accounts import Accounts
 from app.models.Roles import Roles
@@ -31,7 +32,12 @@ def create_account(
 
 
 def get_account_by_password(db:Session, password):
-    query = db.query(Accounts).filter(Accounts.password == password).first()
+    query = db.query(Accounts).filter(
+        and_(
+            Accounts.is_active == True,
+            Accounts.password == password
+        )
+    ).first()
     if query:
         accesses = db.query(Accesses).filter(Accesses.role_id == query.role_id).all()
         permissions = []
