@@ -2,6 +2,7 @@ from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import and_
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from app.models.Accounts import Accounts
 from app.models.Roles import Roles
@@ -19,22 +20,25 @@ def create_account(
         accountgroup_id: Optional[UUID] = None,
         branch_id: Optional[UUID] = None
 ):
-    query = Accounts(
-        password=password,
-        role_id=role_id,
-        accountgroup_id=accountgroup_id,
-        branch_id=branch_id
-    )
-    db.add(query)
-    db.commit()
-    db.refresh(query)
-    return query
+    try:
+        query = Accounts(
+            password=password,
+            role_id=role_id,
+            accountgroup_id=accountgroup_id,
+            branch_id=branch_id
+        )
+        db.add(query)
+        db.commit()
+        db.refresh(query)
+        return query
+    except IntegrityError as e:
+        print(e)
 
 
 def get_account_by_password(db:Session, password):
     query = db.query(Accounts).filter(
         and_(
-            Accounts.is_active == True,
+            Accounts.is_active.is_(True),
             Accounts.password == password
         )
     ).first()
