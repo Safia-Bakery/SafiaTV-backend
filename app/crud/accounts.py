@@ -32,12 +32,14 @@ def create_account(
 
 def get_account_by_password(db:Session, password):
     query = db.query(Accounts).filter(Accounts.password == password).first()
-    accesses = db.query(Accesses).filter(Accesses.role_id == query.role_id).all()
-    permissions = []
-    for access in accesses:
-        permissions.append(access.permission_id)
+    if query:
+        accesses = db.query(Accesses).filter(Accesses.role_id == query.role_id).all()
+        permissions = []
+        for access in accesses:
+            permissions.append(access.permission_id)
 
-    query.role.permissions = permissions
+        query.role.permissions = permissions
+
     return query
 
 
