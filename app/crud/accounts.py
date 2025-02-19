@@ -38,7 +38,7 @@ def create_account(
 def get_account_by_password(db:Session, password):
     query = db.query(Accounts).filter(
         and_(
-            # Accounts.is_active.is_(True),
+            Accounts.is_active.is_(True),
             Accounts.password == password
         )
     ).first()
