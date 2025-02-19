@@ -32,7 +32,9 @@ def create_account(
         db.refresh(query)
         return query
     except IntegrityError as e:
+        db.rollback()
         print(e)
+        return None
 
 
 def get_account_by_password(db:Session, password):

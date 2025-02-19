@@ -54,9 +54,9 @@ async def add_account(
         db: Session = Depends(get_db),
         # current_user: dict = Depends(PermissionChecker(required_permissions='create_account'))
 ):
-    account = get_account_by_password(db=db, password=data.password)
-    if account:
-        raise HTTPException(status_code=404, detail="Account with this password already exists")
+    # account = get_account_by_password(db=db, password=data.password)
+    # if account:
+    #     raise HTTPException(status_code=404, detail="Account with this password already exists")
 
     created_account = create_account(
         db=db,
@@ -65,6 +65,9 @@ async def add_account(
         accountgroup_id=data.accountgroup_id,
         branch_id=data.branch_id
     )
+    if created_account is None:
+        raise HTTPException(status_code=404, detail="Account with this password already exists")
+
     return created_account
 
 

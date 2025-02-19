@@ -15,7 +15,7 @@ from app.db.base import Base
 class Roles(Base):
     __tablename__ = 'roles'
     id = Column(UUID(as_uuid=True), primary_key=True, index = True,default=uuid.uuid4)
-    name = Column(String)
+    name = Column(String, unique=True)
     description = Column(String, nullable =True)
     is_active = Column(Boolean,default=True)
     accesses = relationship("Accesses", back_populates="role")

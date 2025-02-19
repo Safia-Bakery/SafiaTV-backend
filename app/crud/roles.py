@@ -1,5 +1,5 @@
 from sqlalchemy import and_
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy.orm import Session
 
 from app.models.Accesses import Accesses
@@ -8,15 +8,21 @@ from app.schemas.roles import CreateRole, UpdateRole
 
 
 def create_role(db:Session, name, description):
-    query = Roles(
-        name=name,
-        description=description,
-        is_active=True
-    )
-    db.add(query)
-    db.commit()
-    db.refresh(query)
-    return  query
+    try:
+        query = Roles(
+            name=name,
+            description=description,
+            is_active=True
+        )
+        db.add(query)
+        db.commit()
+        db.refresh(query)
+        return query
+
+    except IntegrityError as e:
+        db.rollback()
+        print(e)
+        return None
 
 
 

@@ -58,24 +58,30 @@ async def create_role_lifespan():
             db.close()
 
     with get_db() as db:
-        role = get_role_by_name(db=db, name=settings.admin_role)
-        if not role:
-            role = create_role(db=db, name=settings.admin_role, description='Superuser')
+        # role = get_role_by_name(db=db, name=settings.admin_role)
+        # if not role:
+        #     role = create_role(db=db, name=settings.admin_role, description='Superuser')
 
-        account = get_account_by_password(db=db, password=settings.admin_password)
-        if not account:
-            create_account(db=db, password=settings.admin_password, role_id=role.id)
+        role = create_role(db=db, name=settings.admin_role, description='Superuser')
+        if role is not None:
+            role_permissions = []
+            for i in role.accesses:
+                role_permissions.append(i.permission.link)
 
-        role_permissions = []
-        for i in role.accesses:
-            role_permissions.append(i.permission.link)
+            for key, value in pages_and_permissions.items():
+                for name, link in value.items():
+                    if link not in role_permissions:
+                        permission = get_permission_link(db=db, link=link)
 
-        for key, value in pages_and_permissions.items():
-            for name, link in value.items():
-                if link not in role_permissions:
-                    permission = get_permission_link(db=db, link=link)
+                        create_accesses(db=db, role_id=role.id, permission_id=permission.id)
 
-                    create_accesses(db=db, role_id=role.id, permission_id=permission.id)
+            created_account = create_account(db=db, password=settings.admin_password, role_id=role.id)
+            if created_account is None:
+                print("Account with this password already exists")
+
+        # account = get_account_by_password(db=db, password=settings.admin_password)
+        # if not account:
+        #     create_account(db=db, password=settings.admin_password, role_id=role.id)
 
     yield  #--------------  HERE YOU CAN WRITE LOG ON CLOSING AFTER YIELD ------------
 
