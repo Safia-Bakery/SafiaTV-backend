@@ -66,16 +66,16 @@ async def create_role_lifespan():
         if not account:
             create_account(db=db, password=settings.admin_password, role_id=role.id)
 
-    role_permissions = []
-    for i in role.accesses:
-        role_permissions.append(i.permission.link)
+        role_permissions = []
+        for i in role.accesses:
+            role_permissions.append(i.permission.link)
 
-    for key, value in pages_and_permissions.items():
-        for name, link in value.items():
-            if link not in role_permissions:
-                permission = get_permission_link(db=db, link=link)
+        for key, value in pages_and_permissions.items():
+            for name, link in value.items():
+                if link not in role_permissions:
+                    permission = get_permission_link(db=db, link=link)
 
-                create_accesses(db=db, role_id=role.id, permission_id=permission.id)
+                    create_accesses(db=db, role_id=role.id, permission_id=permission.id)
 
     yield  #--------------  HERE YOU CAN WRITE LOG ON CLOSING AFTER YIELD ------------
 
