@@ -6,7 +6,7 @@ from fastapi import Depends, File
 from fastapi_pagination import Page, paginate
 from sqlalchemy.orm import Session
 
-from app.crud.media import add_media, get_all_medias, get_device_medias, edit_media
+from app.crud.media import add_media, get_all_medias, get_device_medias, edit_media, remove_media
 from app.routes.depth import get_db, get_current_user, PermissionChecker
 from app.schemas.media import CreateMedia, GetMedia, UpdateMedia
 
@@ -53,4 +53,15 @@ async def update_media(
 ):
     media = edit_media(db=db, data=data)
     return media
+
+
+@media_router.delete('/media')
+async def delete_media(
+        id: UUID,
+        db: Session = Depends(get_db),
+        # current_user: dict = Depends(PermissionChecker(required_permissions='delete_media'))
+):
+    media = remove_media(db=db, id=id)
+
+    return {"Status": f"Media {media.name} was deleted successfully"}
 

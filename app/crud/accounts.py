@@ -83,3 +83,11 @@ def edit_account(db:Session, data: UpdateAccount):
     db.refresh(query)
 
     return query
+
+
+
+def remove_account(db:Session, id):
+    query = db.query(Accounts).get(ident=id)
+    db.delete(query)
+    db.commit()
+    return query

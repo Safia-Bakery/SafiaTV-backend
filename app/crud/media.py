@@ -81,3 +81,11 @@ def edit_media(db: Session, data: UpdateMedia):
     db.refresh(obj)
 
     return obj
+
+
+
+def remove_media(db: Session, id):
+    media = db.query(Media).get(ident=id)
+    db.delete(media)
+    db.commit()
+    return media

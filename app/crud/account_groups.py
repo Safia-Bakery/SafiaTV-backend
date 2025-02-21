@@ -46,3 +46,12 @@ def edit_account_group(db: Session, data: UpdateAccountGroup):
     db.commit()
     db.refresh(obj)
     return obj
+
+
+
+def remove_account_group(db: Session, group_id):
+    obj = db.query(AccountGroups).get(ident=group_id)
+    db.delete(obj)
+    db.commit()
+    return obj
+

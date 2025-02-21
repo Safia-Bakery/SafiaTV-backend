@@ -4,7 +4,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.crud.roles import get_all_roles, get_one_role, add_role, update_role
+from app.crud.roles import get_all_roles, get_one_role, add_role, update_role, remove_role
 from app.routes.depth import get_db, PermissionChecker
 from app.schemas.roles import RolesGet, CreateRole, RoleList, UpdateRole
 
@@ -52,4 +52,15 @@ async def update_roles(
 ):
     updated_role = update_role(db=db, data=body)
     return updated_role
+
+
+
+@roles_router.delete('/roles')
+async def delete_role(
+        id: UUID,
+        db: Session = Depends(get_db),
+        # current_user: dict = Depends(PermissionChecker(required_permissions='delete_role'))
+):
+    role = remove_role(db=db, role_id=id)
+    return {"Status": f"Role {role.name} was deleted successfully"}
 

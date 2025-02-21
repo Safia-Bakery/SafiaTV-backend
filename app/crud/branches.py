@@ -72,3 +72,10 @@ def edit_branch(db: Session, data: UpdateBranch):
 
     return obj
 
+
+
+def remove_branch(db: Session, id):
+    obj = db.query(Branches).get(ident=id)
+    db.delete(obj)
+    db.commit()
+    return obj

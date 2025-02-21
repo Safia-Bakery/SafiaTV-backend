@@ -19,7 +19,7 @@ class Media(Base):
     file_url = Column(String, nullable=False)
     description = Column(String)
     is_active = Column(Boolean, default=True)
-    accountgroup_id = Column(UUID(as_uuid=True), ForeignKey('account_groups.id'))
+    accountgroup_id = Column(UUID(as_uuid=True), ForeignKey('account_groups.id', ondelete="SET NULL"))
     accountgroup = relationship('AccountGroups', back_populates='media')
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

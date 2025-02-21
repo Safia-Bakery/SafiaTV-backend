@@ -8,7 +8,8 @@ from fastapi import (
 from fastapi_pagination import paginate, Page
 from sqlalchemy.orm import Session
 
-from app.crud.accounts import get_account_by_password, get_account_list, create_account, get_account_by_id, edit_account
+from app.crud.accounts import get_account_by_password, get_account_list, create_account, get_account_by_id, \
+    edit_account, remove_account
 from app.routes.depth import get_db, PermissionChecker, get_me
 from app.schemas.accounts import CreateAccount, GetAccountFullData, AccountLogin, GetAccounts, UpdateAccount
 from app.utils.utils import verify_password, create_access_token, create_refresh_token, hash_password
@@ -106,3 +107,14 @@ async def update_account(
         # current_user: dict = Depends(PermissionChecker(required_permissions='edit_account'))
 ):
     return edit_account(db=db, data=data)
+
+
+@account_router.delete('/accounts')
+async def delete_account(
+        id: UUID,
+        db: Session = Depends(get_db),
+        # current_user: dict = Depends(PermissionChecker(required_permissions='delete_account'))
+):
+    account = remove_account(db=db, id=id)
+
+    return {"Status": f"Account {account.id} was deleted successfully"}

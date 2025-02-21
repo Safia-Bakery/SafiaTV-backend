@@ -115,3 +115,11 @@ def update_role(db:Session, data: UpdateRole):
     db.refresh(role)
 
     return role
+
+
+def remove_role(db: Session, role_id):
+    query = db.query(Roles).get(ident=role_id)
+    db.delete(query)
+    db.commit()
+    return query
+
