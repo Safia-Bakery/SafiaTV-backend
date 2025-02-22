@@ -34,33 +34,33 @@ async def get_role(
     return role
 
 
-@roles_router.post('/roles', response_model=RolesGet)
-async def create_roles(
-        body: CreateRole,
-        db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='create_role'))
-):
-    created_role = add_role(db=db, data=body)
-    return created_role
+# @roles_router.post('/roles', response_model=RolesGet)
+# async def create_roles(
+#         body: CreateRole,
+#         db: Session = Depends(get_db),
+#         # current_user: dict = Depends(PermissionChecker(required_permissions='create_role'))
+# ):
+#     created_role = add_role(db=db, data=body)
+#     return created_role
 
 
-@roles_router.put('/roles', response_model=RolesGet)
-async def update_roles(
-        body: UpdateRole,
-        db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='edit_role'))
-):
-    updated_role = update_role(db=db, data=body)
-    return updated_role
+# @roles_router.put('/roles', response_model=RolesGet)
+# async def update_roles(
+#         body: UpdateRole,
+#         db: Session = Depends(get_db),
+#         # current_user: dict = Depends(PermissionChecker(required_permissions='edit_role'))
+# ):
+#     updated_role = update_role(db=db, data=body)
+#     return updated_role
 
 
 
-@roles_router.delete('/roles')
-async def delete_role(
-        id: UUID,
-        db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='delete_role'))
-):
-    role = remove_role(db=db, role_id=id)
-    return {"Status": f"Role {role.name} was deleted successfully"}
+# @roles_router.delete('/roles')
+# async def delete_role(
+#         id: UUID,
+#         db: Session = Depends(get_db),
+#         # current_user: dict = Depends(PermissionChecker(required_permissions='delete_role'))
+# ):
+#     role = remove_role(db=db, role_id=id)
+#     return {"Status": f"Role {role.name} was deleted successfully"}
 
