@@ -44,24 +44,26 @@ async def websocket_endpoint(
     await manager.send_text(account_id=current_user['id'], data=f"Client {current_user['id']} is connected !")
     medias = get_device_medias(db=db, branch_id=current_user["branch_id"],
                                account_group=current_user["account_group"])
-    data = [
-        {
-            "id": str(media.id),
-            "name": media.name,
-            "file_url": media.file_url,
-            "description": media.description,
-            "is_active": media.is_active,
-            "accountgroup": {
-                "id": str(media.accountgroup.id),
-                "name": media.accountgroup.name,
-                "description": media.accountgroup.description,
-                "is_active": media.accountgroup.is_active
-            },
-            "created_at": str(media.created_at),
-            "updated_at": str(media.updated_at)
+    data = {
+        "items": [
+            {
+                "id": str(media.id),
+                "name": media.name,
+                "file_url": media.file_url,
+                "description": media.description,
+                "is_active": media.is_active,
+                "accountgroup": {
+                    "id": str(media.accountgroup.id),
+                    "name": media.accountgroup.name,
+                    "description": media.accountgroup.description,
+                    "is_active": media.accountgroup.is_active
+                },
+                "created_at": str(media.created_at),
+                "updated_at": str(media.updated_at)
 
-        } for media in medias
-    ]
+            } for media in medias
+        ]
+    }
     try:
         await manager.send_json(account_id=current_user['id'], data=data)
         while True:
