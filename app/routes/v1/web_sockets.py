@@ -1,8 +1,8 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, WebSocketException
 from sqlalchemy.orm import Session
 
 from app.crud.media import get_device_medias
-from app.routes.depth import PermissionChecker, get_db
+from app.routes.depth import PermissionChecker, get_db, get_current_user
 from app.utils.websocket_connection import manager
 
 
@@ -10,13 +10,33 @@ from app.utils.websocket_connection import manager
 websocket_router = APIRouter()
 
 
+async def websocket_auth(websocket: WebSocket):
+    """Extracts token from WebSocket headers and verifies authentication."""
+    token = websocket.headers.get("Authorization")
+    if not token or not token.startswith("Bearer "):
+        raise WebSocketException(code=1008, reason="Token missing or invalid format")
+
+    # token = token.split("Bearer ")[1]  # Extract actual token
+    account = await get_current_user(token=token)
+
+    if not account:
+        return None
+
+    return account  # Return decoded JWT data
+
+
 
 @websocket_router.websocket("/ws/media/device")
 async def websocket_endpoint(
         websocket: WebSocket,
         db: Session = Depends(get_db),
-        current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
+        # current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
 ):
+    # Authenticate user
+    current_user = await websocket_auth(websocket)
+    if current_user is None:
+        raise WebSocketException(code=1008, reason="Invalid or expired token")
+
     """WebSocket connection handler."""
     await manager.connect(account_id=current_user['id'], websocket=websocket)
     await manager.send_text(account_id=current_user['id'], data=f"Client {current_user['id']} is connected !")
