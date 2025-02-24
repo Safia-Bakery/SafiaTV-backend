@@ -43,22 +43,22 @@ def get_media(db: Session, id):
 
 
 def get_device_medias(db: Session, branch_id, account_group):
-    # branch_account_group = db.query(
-    #     AccountGroupBranchRelations.accountgroup_id
-    # ).filter(
-    #     and_(
-    #         AccountGroupBranchRelations.branch_id == branch_id,
-    #         AccountGroupBranchRelations.accountgroup_id == account_group
-    #     )
-    # )
-    branch_account_group = select(
+    branch_account_group = db.query(
         AccountGroupBranchRelations.accountgroup_id
-    ).where(
+    ).filter(
         and_(
             AccountGroupBranchRelations.branch_id == branch_id,
             AccountGroupBranchRelations.accountgroup_id == account_group
         )
-    ).scalar_subquery()
+    )
+    # branch_account_group = select(
+    #     AccountGroupBranchRelations.accountgroup_id
+    # ).where(
+    #     and_(
+    #         AccountGroupBranchRelations.branch_id == branch_id,
+    #         AccountGroupBranchRelations.accountgroup_id == account_group
+    #     )
+    # ).scalar_subquery()
 
     medias = db.query(
         Media
