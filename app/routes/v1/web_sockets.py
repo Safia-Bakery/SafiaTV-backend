@@ -11,7 +11,7 @@ websocket_router = APIRouter()
 
 
 
-@websocket_router.websocket("ws/media/device")
+@websocket_router.websocket("/ws/media/device")
 async def websocket_endpoint(
         websocket: WebSocket,
         db: Session = Depends(get_db),
