@@ -13,8 +13,9 @@ websocket_router = APIRouter()
 async def websocket_auth(websocket: WebSocket):
     """Extracts token from WebSocket headers and verifies authentication."""
     token = websocket.headers.get("Authorization")
-    if not token or not token.startswith("Bearer "):
-        raise WebSocketException(code=1008, reason="Token missing or invalid format")
+    if not token:
+        # raise WebSocketException(code=1008, reason="Token missing or invalid format")
+        return None
 
     # token = token.split("Bearer ")[1]  # Extract actual token
     account = await get_current_user(token=token)
@@ -34,6 +35,7 @@ async def websocket_endpoint(
 ):
     # Authenticate user
     current_user = await websocket_auth(websocket)
+    print("current_user: ", current_user)
     if current_user is None:
         raise WebSocketException(code=1008, reason="Invalid or expired token")
 
