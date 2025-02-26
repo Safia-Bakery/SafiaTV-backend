@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     version: str = "1.0.0"
 
 
-    # refresh_token_expire_minutes: int = 60*24*10
+    refresh_token_expire_minutes: int = 60*24*10
     access_token_expire_minutes: int = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
     jwt_secret_key: str = os.getenv("JWT_SECRET_KEY")
     jwt_refresh_secret_key: str = os.getenv("JWT_REFRESH_SECRET_KEY")
