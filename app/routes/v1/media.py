@@ -21,7 +21,7 @@ media_router = APIRouter()
 async def create_media(
     data: CreateMedia,
     db: Session = Depends(get_db),
-    # current_user: dict = Depends(PermissionChecker(required_permissions='create_media'))
+    current_user: dict = Depends(PermissionChecker(required_permissions='create_media'))
 ):
     created_media = add_media(db=db, data=data)
     try:
@@ -38,7 +38,7 @@ async def get_media_list(
     id: Optional[UUID] = None,
     status: Optional[bool] = None,
     db: Session = Depends(get_db),
-    # current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
+    current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
 ):
     medias = get_all_medias(db=db, media_id=id, status=status)
     return paginate(medias)
@@ -59,7 +59,7 @@ async def get_device_media(
 async def update_media(
         data: UpdateMedia,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='edit_media'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='edit_media'))
 ):
     media = edit_media(db=db, data=data)
     try:
@@ -74,16 +74,16 @@ async def update_media(
 async def delete_media(
         id: UUID,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='delete_media'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='delete_media'))
 ):
     media = remove_media(db=db, id=id)
-    print("DELETED MEDIA: ", media)
+    # print("DELETED MEDIA: ", media)
     file_path = media.file_url
-    print("file_path: ", file_path)
+    # print("file_path: ", file_path)
 
     if os.path.exists(file_path):
         os.remove(file_path)
-        print(f"{file_path} deleted successfully.")
+        # print(f"{file_path} deleted successfully.")
     else:
         print(f"{file_path} not found.")
 

@@ -16,7 +16,7 @@ branch_account_group_router = APIRouter()
 async def create_branch_account_group(
         data: CreateBranchAccountGroups,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='create_account_group_branch_relation'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='create_account_group_branch_relation'))
 ):
     # branch_account_groups = []
     for account_group in data.account_groups:
@@ -42,7 +42,7 @@ async def create_branch_account_group(
 async def delete_branch_account_group(
         id: UUID,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='delete_account_group_branch_relation'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='delete_account_group_branch_relation'))
 ):
     removed_obj = delete_record(db=db, id=id)
     if removed_obj is None:

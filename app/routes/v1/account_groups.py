@@ -18,7 +18,7 @@ account_group_router = APIRouter()
 async def get_account_group_list(
         status: Optional[bool] = None,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_account_group'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='view_account_group'))
 ):
     account_groups = get_account_groups(db=db, status=status)
     return account_groups
@@ -28,7 +28,7 @@ async def get_account_group_list(
 async def get_account_group(
         id: UUID,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_account_group'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='view_account_group'))
 ):
     account_group = get_one_account_group(db=db, group_id=id)
     return account_group
@@ -38,7 +38,7 @@ async def get_account_group(
 async def create_account_groups(
         data: CreateAccountGroup,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='create_account_group'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='create_account_group'))
 ):
     created_account_group = add_account_group(db=db, data=data)
     return created_account_group
@@ -48,7 +48,7 @@ async def create_account_groups(
 async def update_account_group(
         data: UpdateAccountGroup,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='edit_account_group'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='edit_account_group'))
 ):
     updated_obj = edit_account_group(db=db, data=data)
     return updated_obj
@@ -59,7 +59,7 @@ async def update_account_group(
 async def delete_account_group(
         id: UUID,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='delete_account_group'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='delete_account_group'))
 ):
     account_group = remove_account_group(db=db, group_id=id)
     return {"Status": f"Account group {account_group.name} was deleted successfully"}

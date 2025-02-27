@@ -30,12 +30,11 @@ async def websocket_auth(websocket: WebSocket):
 @websocket_router.websocket("/ws/media/device")
 async def websocket_endpoint(
         websocket: WebSocket,
-        db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_media'))
+        db: Session = Depends(get_db)
 ):
     # Authenticate user
     current_user = await websocket_auth(websocket)
-    print("current_user: ", current_user)
+    # print("current_user: ", current_user)
     if current_user is None:
         raise WebSocketException(code=1008, reason="Invalid or expired token")
 

@@ -20,7 +20,7 @@ branches_router = APIRouter()
 async def create_branch(
         data: CreateBranch,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='create_branch'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='create_branch'))
 ):
     created_branch = add_branch(db=db, data=data)
     return created_branch
@@ -31,7 +31,7 @@ async def get_branch_list(
         name: Optional[str] = None,
         status: Optional[bool] = None,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_branch'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='view_branch'))
 ):
     branches = get_all_branches(db=db, status=status, name=name)
     return paginate(branches)
@@ -41,7 +41,7 @@ async def get_branch_list(
 async def get_branch(
         id: UUID,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_branch'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='view_branch'))
 ):
     branch = get_branch_account_groups(db=db, branch_id=id)
     return branch
@@ -51,7 +51,7 @@ async def get_branch(
 async def update_branch(
         data: UpdateBranch,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='edit_branch'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='edit_branch'))
 ):
     branch = edit_branch(db=db, data=data)
     return branch
@@ -61,7 +61,7 @@ async def update_branch(
 async def delete_branch(
         id: UUID,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='delete_branch'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='delete_branch'))
 ):
     branch = remove_branch(db=db, id=id)
     return {"Status": f"Branch {branch.name} was deleted successfully"}

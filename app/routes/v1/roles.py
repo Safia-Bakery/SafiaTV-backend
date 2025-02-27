@@ -18,7 +18,7 @@ roles_router = APIRouter()
 async def get_role_list(
         status: Optional[bool] = None,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_role'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='view_role'))
 ):
     roles = get_all_roles(db=db, status=status)
     return roles
@@ -28,7 +28,7 @@ async def get_role_list(
 async def get_role(
         id: UUID,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_role'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='view_role'))
 ):
     role = get_one_role(db=db, role_id=id)
     return role

@@ -31,7 +31,7 @@ permissions_router = APIRouter()
 async def get_permission_list(
         page_id: Optional[UUID] = None,
         db: Session = Depends(get_db),
-        # current_user: dict = Depends(PermissionChecker(required_permissions='view_permission'))
+        current_user: dict = Depends(PermissionChecker(required_permissions='view_permission'))
 ):
     permissions = get_all_permissions(db=db, page_id=page_id)
     return permissions
