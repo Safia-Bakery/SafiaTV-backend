@@ -56,13 +56,13 @@ def get_account_by_password(db:Session, password):
             Accounts.password == password
         )
     ).first()
-    # if query:
-    #     accesses = db.query(Accesses).filter(Accesses.role_id == query.role_id).all()
-    #     permissions = []
-    #     for access in accesses:
-    #         permissions.append(access.permission_id)
-    #
-    #     query.role.permissions = permissions
+    if query:
+        accesses = db.query(Accesses).filter(Accesses.role_id == query.role_id).all()
+        permissions = []
+        for access in accesses:
+            permissions.append(access.permission_id)
+
+        query.role.permissions = permissions
 
     return query
 
