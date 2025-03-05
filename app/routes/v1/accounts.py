@@ -57,12 +57,12 @@ async def account_login(
         data: AccountLogin,
         db: Session = Depends(get_db)
 ):
-    account = get_account_by_password(db=db, password=hash_password(data.password))
+    account = get_account_by_password(db=db, password=data.password)
     if not account:
         raise HTTPException(status_code=404, detail="Invalid password")
 
-    if not verify_password(data.password, account.password):
-        raise HTTPException(status_code=404, detail="Invalid password")
+    # if not verify_password(data.password, account.password):
+    #     raise HTTPException(status_code=404, detail="Invalid password")
 
     permissions = []
     if account.role.accesses:
@@ -94,7 +94,7 @@ async def add_account(
 
     created_account = create_account(
         db=db,
-        password=hash_password(data.password),
+        password=data.password,
         role_id=data.role_id,
         accountgroup_id=data.accountgroup_id,
         branch_id=data.branch_id
